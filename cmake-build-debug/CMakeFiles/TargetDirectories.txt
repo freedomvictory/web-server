@@ -1,0 +1,3 @@
+/home/victory/code/debain_project_webserver/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/victory/code/debain_project_webserver/cmake-build-debug/CMakeFiles/project_web_server.dir
+/home/victory/code/debain_project_webserver/cmake-build-debug/CMakeFiles/edit_cache.dir

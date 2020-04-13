@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="debain (34dba9f3-65cf-4a7c-bced-dde248297db4)">
+    <serverData>
+      <paths name="debain (34dba9f3-65cf-4a7c-bced-dde248297db4)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/victory/code/debain_project_webserver" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
