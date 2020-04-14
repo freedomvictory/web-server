@@ -7,7 +7,7 @@
 4. run it 
 ### references book
 * Understanding unix/linux programming 
-* The linux programming programming interface 
+* The linux programming interface 
 * advanced programming in the unix environment 
 ### author message 
     name:dingguoliang
