@@ -89,7 +89,7 @@ int connet_to_server(char* host, int portnum)
     server_add.sin_port = htons(portnum);
 
     /*connect server */
-    if(connect(sock_id, (struct sockaddr *)server_add, sizeof(server_add)) != 0)
+    if(connect(sock_id, (struct sockaddr *)&server_add, sizeof(server_add)) != 0)
         return -1;
     return sock_id;
 }

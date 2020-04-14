@@ -4,7 +4,6 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/victory/code/debain_project_webserver/client.c" "/home/victory/code/debain_project_webserver/cmake-build-debug/CMakeFiles/project_web_server.dir/client.c.o"
   "/home/victory/code/debain_project_webserver/socklib.c" "/home/victory/code/debain_project_webserver/cmake-build-debug/CMakeFiles/project_web_server.dir/socklib.c.o"
   "/home/victory/code/debain_project_webserver/webserver.c" "/home/victory/code/debain_project_webserver/cmake-build-debug/CMakeFiles/project_web_server.dir/webserver.c.o"
   )

@@ -78,9 +78,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/victory/code/debain_project_webserver/client.c">
-			<Option target="project_web_server"/>
-		</Unit>
 		<Unit filename="/home/victory/code/debain_project_webserver/socklib.c">
 			<Option target="project_web_server"/>
 		</Unit>
