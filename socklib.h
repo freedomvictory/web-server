@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -19,7 +20,7 @@
 #define BACKLOG 1
 
 int make_server_socket(int portnum);
-int connet_to_server(char* host, int portnum);
+int connect_to_server(char* host, int portnum);
 
 
 

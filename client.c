@@ -18,7 +18,7 @@ void talk_with_server(int fd);
 int main(void)
 {
     int fd_communicate;
-    fd_communicate = connet_to_server("192.168.43.64", 8888);
+    fd_communicate = connect_to_server("192.168.43.64", 8888);
     if(fd_communicate < 0)
         return -1;
 
@@ -34,5 +34,8 @@ void talk_with_server(int fd)
     int n;
 
     n = read(fd, buf, LEN);
+  // printf("buf:%s\n", buf);
     write(1, buf, n);
+
+
 }

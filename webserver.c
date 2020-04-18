@@ -15,11 +15,24 @@
 
 
 /*do handle the request sending by client */
-void process_request(int fd);
+void process_request(char* rq, int fd);
 void child_waiter(int signum); /*receive SIGCHILD signal handler*/
+void read_til_crnl(FILE *fp);
+void cannot_do(int fd);
+int not_exist(char* arg);
+void do_404(char *arg, int fd);
+int is_dir(char *arg);
+void do_ls(char *arg, int fd);
+int ends_in_cgi(cha *arg);
+void do_exec(char *arg, int fd);
+void do_cat(char *arg, int fd);
+
 int main() {
 
     int webserver_socket, fd_communicate;
+    FILE* fpin;
+
+    char request[BUFSIZ];
 
     /*set what handler will call, when receive SIGCHILD signal*/
     signal(SIGCHLD, child_waiter);
@@ -38,37 +51,45 @@ int main() {
             else
                 continue;
         }
-
         /*debug*/
         printf("accept successs: fd:%d\n", fd_communicate);
-        process_request(fd_communicate);
 
-        close(fd_communicate);
+        /*get request string from socket*/
+        fpin = fdopen(fd_communicate, "r");
+        fgets(request, BUFSIZ, fpin);
+        printf("got a call: requst = %s\n", request);
+        read_til_crnl(fpin);
+        /*server process request and return response*/
+        process_request(request, fd_communicate);
+
+        fclose(fpin);
     }
-
-
-
 
     return 0;
 }
 
-void process_request(int fd)
+void process_request(char* rq, int fd)
 {
-    pid_t pid;
+    char	cmd[BUFSIZ], arg[BUFSIZ];
 
-    pid = fork();
-    switch (pid)
-    {
-        case -1:
-            return;
-        case 0:
-            dup2(fd, 1);
-            close(fd);
-            execl("/bin/date", "date", NULL);
-            //oops("execlp");
-        default:
-            wait(NULL);
-    }
+    /* create a new process and return if not the child */
+    if ( fork() != 0 )
+        return;
+
+    strcpy(arg, "./");		/* precede args with ./ */
+    if ( sscanf(rq, "%s%s", cmd, arg+2) != 2 )
+        return;
+
+    if ( strcmp(cmd,"GET") != 0 )
+        cannot_do(fd);
+    else if ( not_exist( arg ) )
+        do_404(arg, fd );
+    else if (is_dir(arg) )
+        do_ls( arg, fd );
+    else if ( ends_in_cgi( arg ) )
+        do_exec( arg, fd );
+    else
+        do_cat( arg, fd );
 
 }
 
@@ -78,4 +99,40 @@ void child_waiter(int signum)
     while(waitpid(-1, NULL, WNOHANG) > 0);
 }
 
+void read_til_crnl(FILE *fp)
+{
 
+}
+void cannot_do(int fd)
+{
+
+}
+int not_exist(char* arg)
+{
+    return 0;
+}
+void do_404(char *arg, int fd)
+{
+
+}
+int is_dir(char *arg)
+{
+    return 0;
+}
+void do_ls(char *arg, int fd)
+{
+
+}
+int ends_in_cgi(cha *arg)
+{
+
+    return 0;
+}
+void do_exec(char *arg, int fd)
+{
+
+}
+void do_cat(char *arg, int fd)
+{
+
+}

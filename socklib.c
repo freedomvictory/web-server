@@ -63,7 +63,7 @@ int make_server_socket(int portnum)
  * if succeed , return client socket id
  * else, return -1
  * */
-int connet_to_server(char* host, int portnum)
+int connect_to_server(char* host, int portnum)
 {
     int sock_id;
     char hostname[HOSTLEN];
