@@ -2,6 +2,11 @@
 // Created by victory on 2020/4/13.
 //
 /*This is minimal web server main program
+ * features:supports the GET command only
+ *                      run in the current directory
+ *                      forks a new child to handle each request
+ *                      has MAJOR security holes, for demo purposes only
+ *                      has many other weakness, but is a good start
  * */
 
 #include <stdio.h>
@@ -24,11 +29,12 @@ void cannot_do(int fd);
 int not_exist(char* arg);                   /*judge Is the file exist in web server?*/
 void do_404(char *item, int fd);             /*web server do 404 response to client*/
 int is_dir(char *file);                      /*judge Is file a dir? */
-void do_ls(char *arg, int fd);              /*do ls command*/
-int ends_in_cgi(cha *arg);
+void do_ls(char *dir, int fd);              /*do ls command*/
+int ends_in_cgi(char *arg);
 void do_exec(char *arg, int fd);            /*do exec command*/
-void do_cat(char *arg, int fd);             /*do cat command*/
+void do_cat(char *file, int fd);             /*do cat command*/
 void header(FILE *fp, char *content_type); /*the reply header*/
+char *file_type(char *file);                /*got the file 'extension'*/
 int main() {
 
     int webserver_socket, fd_communicate;
@@ -194,7 +200,7 @@ void do_404(char *item, int fd)
 int is_dir(char *file)
 {
     struct stat info;
-    return ( stat(f, &info) != -1 && S_ISDIR(info.st_mode) );
+    return ( stat(file, &info) != -1 && S_ISDIR(info.st_mode) );
 }
 /**************************************
  * web server do ls command
@@ -202,35 +208,112 @@ int is_dir(char *file)
  * @param fd  :communicate socket
  */
 
-void do_ls(char *arg, int fd)
+void do_ls(char *dir, int fd)
 {
     FILE* fp;
     fp = fdopen(fd, "w");
     if(fp == NULL)
     {
         //error occurs
-        return;
+        exit(-1);
     }
     header(fp, "text/plain");
     fprintf(fp,"\r\n");
     fflush(fp);
 
+
     dup2(fd, 1);
     dup2(fd, 2);
-    execlp("ls", "ls", "-l", arg, NULL);
-    perror(arg);
+    close(fd);
+    execlp("ls", "ls", "-l", dir, NULL);
+    perror(dir);
     exit(1);
 }
-int ends_in_cgi(cha *arg)
+/********************************************
+ * judge whether the file extension is  cgi
+ * @param arg
+ * @return 1 : yes or 0 : no
+ */
+int ends_in_cgi(char *arg)
 {
-
-    return 0;
+    return (strcmp(file_type(arg), "cgi") == 0);
 }
 void do_exec(char *arg, int fd)
 {
+    FILE* fp;
+    fp = fdopen(fd, "w");
+    if(fp == NULL)
+    {
+        //error occurs
+        exit(-1);
+    }
+    header(fp, NULL);
+    fflush(fp);
+
+    dup2(fd, 1);
+    dup2(fd, 2);
+    close(fd);
+    execl(arg, arg, NULL);
+    perror(arg);
+    exit(1);
 
 }
-void do_cat(char *arg, int fd)
+/****************************************
+ * return the 'extension' of file
+ * @param file :filename
+ * @return : file extension
+ */
+char *file_type(char *file)
 {
+    char *cp;
+    if((cp = strrchr(file, '.') )!= NULL)
+    {
+        return cp + 1;
+    }
+    return "";
+}
+/*****************************************
+ * sends back file contents after a header
+ * @param file:filename
+ * @param fd:socket
+ */
+void do_cat(char *file, int fd)
+{
+    char *extension = file_type(file);
+    char *content = "text/plain";
+    FILE *fp_sock;
+    FILE *fp_file;
+    char c;
 
+    if(!strcmp(extension, "html"))
+    {
+        content = "text/html";
+    }
+    else if(!strcmp(extension, "gif"))
+    {
+        content = "image/gif";
+    }
+    else if(!strcmp(extension, "jpg"))
+    {
+        content = "image/jpeg";
+    }
+    else if(!strcmp(extension, "jpeg"))
+    {
+        content = "image/jpeg";
+    }
+
+    fp_sock = fdopen(fd, "w");
+    fp_file = fopen(file, "r");
+    if(fp_sock != NULL & fp_file != NULL)
+    {
+        header(fp_sock, content);
+        fprintf(fp_sock, "\r\n");
+        while((c = getc(fp_file)) != EOF)
+        {
+            putc(c, fp_sock);
+        }
+        fclose(fp_sock);
+        fclose(fp_file);
+    }
+    exit(0);
 }
