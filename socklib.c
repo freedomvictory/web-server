@@ -3,6 +3,7 @@
 //
 
 #include "socklib.h"
+#include <stdarg.h>
 
 /*socklib.c
 *This file contain function used to lots when writing internet
@@ -18,6 +19,7 @@
 */
 
 
+void logging(const char *fmt, ...);
 
 /*
  * return a server socket( socket() -> bind() -> listen())
@@ -42,7 +44,10 @@ int make_server_socket_q(int portnum, int backlog)
     hp = gethostbyname(hostname);                   //get info about host
 
     /*got local host ip address and package sockaddr_in struct*/
+
     bcopy((void *)hp->h_addr, (void *)&(saddr.sin_addr), hp->h_length);
+    logging("server ip:  %s\n", inet_ntoa(saddr.sin_addr));
+
     saddr.sin_family = AF_INET;
     saddr.sin_port = htons(portnum);
 
@@ -92,4 +97,14 @@ int connect_to_server(char* host, int portnum)
     if(connect(sock_id, (struct sockaddr *)&server_add, sizeof(server_add)) != 0)
         return -1;
     return sock_id;
+}
+
+void logging(const char *fmt, ...)
+{
+    va_list args;
+    fprintf( stderr, "LOG: " );
+    va_start( args, fmt );
+    vfprintf( stderr, fmt, args );
+    va_end( args );
+    fprintf( stderr, "\n" );
 }

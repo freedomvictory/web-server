@@ -1,4 +1,4 @@
-/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/make -DCMAKE_C_COMPILER=/usr/bin/gcc -G "CodeBlocks - Unix Makefiles" /home/victory/code/debain_project_webserver
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/make -DCMAKE_C_COMPILER=/usr/bin/gcc -G "CodeBlocks - Unix Makefiles" /mnt/c/Users/Administrator/web_server
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/victory/code/debain_project_webserver/cmake-build-debug
+-- Build files have been written to: /mnt/c/Users/Administrator/web_server/cmake-build-debug

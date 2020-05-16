@@ -2,15 +2,11 @@
 <project version="4">
   <component name="PublishConfigData" autoUpload="Always" serverName="debain (34dba9f3-65cf-4a7c-bced-dde248297db4)">
     <serverData>
-      <paths name="debain (34dba9f3-65cf-4a7c-bced-dde248297db4)">
+      <paths name="WSL (de837302-83fa-4cb0-bb95-7edfe749e8f1)">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/victory/code/debain_project_webserver" local="$PROJECT_DIR$" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
-          <excludedPaths>
-            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
-            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
-          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
