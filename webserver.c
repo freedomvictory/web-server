@@ -20,6 +20,7 @@
 
 #define PORTNUM 8888
 
+extern void logging(const char *fmt, ...);
 
 /*do handle the request sending by client */
 void process_request(char* rq, int fd);
@@ -55,11 +56,12 @@ int main() {
         if(fd_communicate < 0 )
         {
             if (errno == EINTR)         //accept interupted
-                break;
-            else
                 continue;
+            else
+                break;
         }
         /*debug*/
+
         printf("accept successs: fd:%d\n", fd_communicate);
 
         /*get request string from socket*/
@@ -131,8 +133,10 @@ void read_til_crnl(FILE *fp)
 void header( FILE *fp, char *content_type )
 {
     fprintf(fp, "HTTP/1.0 200 OK\r\n");
+    logging("response:%s",  "HTTP/1.0 200 OK\r\n");
     if ( content_type )
     fprintf(fp, "Content-type: %s\r\n", content_type );
+
 }
 
 /* what did server do when receive request which not supported
@@ -149,6 +153,7 @@ void cannot_do(int fd)
         return;
     }
     fprintf(fp, "HTTP/1.0 501 Not Implemented\r\n");
+    logging("response:%s",  "HTTP/1.0 501 Not Implemented");
     fprintf(fp, "Content-type: text/plain\r\n");
     fprintf(fp, "\r\n");
 
@@ -184,6 +189,7 @@ void do_404(char *item, int fd)
     }
 
     fprintf(fp, "HTTP/1.0 404 Not Found\r\n");
+    logging("response:%s",  "HTTP/1.0 404 Not Found\\r\\n\"");
     fprintf(fp, "Content-type: text/plain\r\n");
     fprintf(fp, "\r\n");
 
